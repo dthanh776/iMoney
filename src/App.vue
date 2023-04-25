@@ -1,26 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <component :is="layout">
+        <router-view></router-view>
+    </component>
 </template>
 
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import { db } from "./config/firebase";
+// import { getDocs, collection } from "firebase/firestore";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
+import { PUBLIC_LAYOUT } from "./constants/index.js";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+    setup() {
+        const route = useRoute();
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+        return {
+            layout: computed(
+                () => (route.meta.layout || PUBLIC_LAYOUT) + "-layout"
+            ),
+        };
+    },
+    // setup() {
+    //   async function getTransactions() {
+    //     const res = await getDocs(collection(db, 'transaction'))
+    //     const data = res.docs.map(doc => doc.data())
+    //     return data
+    //   }
+    //   getTransactions()
+    //   return { getTransactions }
+    // }
+};
+</script>
